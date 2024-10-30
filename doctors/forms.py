@@ -1,6 +1,7 @@
 from django import forms
 from .models import Classification, Doctor
 
+
 class ClassificationForm(forms.ModelForm):
     class Meta:
         model = Classification
@@ -9,6 +10,7 @@ class ClassificationForm(forms.ModelForm):
             'title': 'Название классификации',
             'description': 'Описание классификации',
         }
+
 
 class DoctorForm(forms.ModelForm):
     class Meta:

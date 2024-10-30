@@ -1,0 +1,25 @@
+{% extends 'medic/includes/base.html' %}
+
+{% block content %}
+  <h1>Результаты</h1>
+
+  <h2>Добавить новый результат</h2>
+  <form method="POST" action="{% url 'result-create' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Создать</button>
+  </form>
+
+  <h2>Список результатов</h2>
+  <ul>
+    {% for result in object_list %}
+      <li>
+        {{ result.description }} - <a href="{% url 'result-detail' result.id %}">Детали</a>
+        | <a href="{% url 'result-update' result.id %}">Редактировать</a>
+        | <a href="{% url 'result-delete' result.id %}">Удалить</a>
+      </li>
+    {% empty %}
+      <li>Нет результатов.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

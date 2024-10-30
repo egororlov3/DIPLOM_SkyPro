@@ -1,81 +1,109 @@
-from rest_framework import generics
+from django.shortcuts import render
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 from .models import Diagnostic, Record, Result
-from .serializers import DiagnosticSerializer, RecordSerializer, ResultSerializer
+from .forms import DiagnosticForm, RecordForm, ResultForm
 
 
-# Diagnostic
-class DiagnosticListView(generics.ListAPIView):
-    queryset = Diagnostic.objects.all()
-    serializer_class = DiagnosticSerializer
+# Main
+def main_view(request):
+    return render(request, 'medic/main.html')
 
 
-class DiagnosticCreateView(generics.CreateAPIView):
-    queryset = Diagnostic.objects.all()
-    serializer_class = DiagnosticSerializer
+# DIAGNOSTIC
+class DiagnosticListView(ListView):
+    model = Diagnostic
+    template_name = 'medic/diagnostic_list.html'
+    context_object_name = 'diagnostics'
 
 
-class DiagnosticDetailView(generics.RetrieveAPIView):
-    queryset = Diagnostic.objects.all()
-    serializer_class = DiagnosticSerializer
+class DiagnosticCreateView(CreateView):
+    model = Diagnostic
+    form_class = DiagnosticForm
+    template_name = 'medic/diagnostic_form.html'
+    success_url = reverse_lazy('diagnostic_list')
 
 
-class DiagnosticUpdateView(generics.UpdateAPIView):
-    queryset = Diagnostic.objects.all()
-    serializer_class = DiagnosticSerializer
+class DiagnosticDetailView(DetailView):
+    model = Diagnostic
+    template_name = 'medic/diagnostic_detail.html'
+    context_object_name = 'diagnostic'
 
 
-class DiagnosticDeleteView(generics.DestroyAPIView):
-    queryset = Diagnostic.objects.all()
-    serializer_class = DiagnosticSerializer
+class DiagnosticUpdateView(UpdateView):
+    model = Diagnostic
+    form_class = DiagnosticForm
+    template_name = 'medic/diagnostic_form.html'
+    success_url = reverse_lazy('diagnostic_list')
 
 
-# Record
-class RecordListView(generics.ListAPIView):
-    queryset = Record.objects.all()
-    serializer_class = RecordSerializer
+class DiagnosticDeleteView(DeleteView):
+    model = Diagnostic
+    template_name = 'medic/diagnostic_confirm_delete.html'
+    success_url = reverse_lazy('diagnostic_list')
 
 
-class RecordCreateView(generics.CreateAPIView):
-    queryset = Record.objects.all()
-    serializer_class = RecordSerializer
+# RECORD
+class RecordListView(ListView):
+    model = Record
+    template_name = 'record_list.html'
+    context_object_name = 'records'
 
 
-class RecordDetailView(generics.RetrieveAPIView):
-    queryset = Record.objects.all()
-    serializer_class = RecordSerializer
+class RecordCreateView(CreateView):
+    model = Record
+    form_class = RecordForm
+    template_name = 'record_form.html'
+    success_url = reverse_lazy('record_list')
 
 
-class RecordUpdateView(generics.UpdateAPIView):
-    queryset = Record.objects.all()
-    serializer_class = RecordSerializer
+class RecordDetailView(DetailView):
+    model = Record
+    template_name = 'record_detail.html'
+    context_object_name = 'record'
 
 
-class RecordDeleteView(generics.DestroyAPIView):
-    queryset = Record.objects.all()
-    serializer_class = RecordSerializer
+class RecordUpdateView(UpdateView):
+    model = Record
+    form_class = RecordForm
+    template_name = 'record_form.html'
+    success_url = reverse_lazy('record_list')
 
 
-# Result
-class ResultListView(generics.ListAPIView):
-    queryset = Result.objects.all()
-    serializer_class = ResultSerializer
+class RecordDeleteView(DeleteView):
+    model = Record
+    template_name = 'record_confirm_delete.html'
+    success_url = reverse_lazy('record_list')
 
 
-class ResultCreateView(generics.CreateAPIView):
-    queryset = Result.objects.all()
-    serializer_class = ResultSerializer
+# RESULT
+class ResultListView(ListView):
+    model = Result
+    template_name = 'result_list.html'
+    context_object_name = 'results'
 
 
-class ResultDetailView(generics.RetrieveAPIView):
-    queryset = Result.objects.all()
-    serializer_class = ResultSerializer
+class ResultCreateView(CreateView):
+    model = Result
+    form_class = ResultForm
+    template_name = 'result_form.html'
+    success_url = reverse_lazy('result_list')
 
 
-class ResultUpdateView(generics.UpdateAPIView):
-    queryset = Result.objects.all()
-    serializer_class = ResultSerializer
+class ResultDetailView(DetailView):
+    model = Result
+    template_name = 'result_detail.html'
+    context_object_name = 'result'
 
 
-class ResultDeleteView(generics.DestroyAPIView):
-    queryset = Result.objects.all()
-    serializer_class = ResultSerializer
+class ResultUpdateView(UpdateView):
+    model = Result
+    form_class = ResultForm
+    template_name = 'result_form.html'
+    success_url = reverse_lazy('result_list')
+
+
+class ResultDeleteView(DeleteView):
+    model = Result
+    template_name = 'result_confirm_delete.html'
+    success_url = reverse_lazy('result_list')

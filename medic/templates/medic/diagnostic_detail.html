@@ -1,0 +1,22 @@
+{% extends 'medic/includes/base.html' %}
+
+{% block content %}
+  <h1>Детали теста: {{ object.name }}</h1>
+  <p>Описание: {{ object.description }}</p>
+
+  <h2>Редактировать тест</h2>
+  <form method="POST" action="{% url 'diagnostic-update' object.id %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить изменения</button>
+  </form>
+
+  <h2>Удалить тест</h2>
+  <form method="POST" action="{% url 'diagnostic-delete' object.id %}">
+    {% csrf_token %}
+    <p>Вы уверены, что хотите удалить этот тест?</p>
+    <button type="submit">Удалить</button>
+  </form>
+
+  <a href="{% url 'diagnostic-list' %}">Назад к списку тестов</a>
+{% endblock %}

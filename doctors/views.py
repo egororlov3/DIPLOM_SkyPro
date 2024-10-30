@@ -1,55 +1,70 @@
-from rest_framework import generics
+from django.views.generic import ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 from .models import Classification, Doctor
-from .serializers import ClassificationSerializer, DoctorSerializer
+from .forms import ClassificationForm, DoctorForm
 
 
-# Classification
-class ClassificationListView(generics.ListAPIView):
-    queryset = Classification.objects.all()
-    serializer_class = ClassificationSerializer
+# CLASSIFICATION
+class ClassificationListView(ListView):
+    model = Classification
+    template_name = 'classification_list.html'  # Укажите путь к вашему шаблону
+    context_object_name = 'classifications'
 
 
-class ClassificationCreateView(generics.CreateAPIView):
-    queryset = Classification.objects.all()
-    serializer_class = ClassificationSerializer
+class ClassificationCreateView(CreateView):
+    model = Classification
+    form_class = ClassificationForm
+    template_name = 'classification_form.html'  # Укажите путь к вашему шаблону
+    success_url = reverse_lazy('classification_list')  # Замените на имя вашего URL
 
 
-class ClassificationDetailView(generics.RetrieveAPIView):
-    queryset = Classification.objects.all()
-    serializer_class = ClassificationSerializer
+class ClassificationDetailView(DetailView):
+    model = Classification
+    template_name = 'classification_detail.html'  # Укажите путь к вашему шаблону
+    context_object_name = 'classification'
 
 
-class ClassificationUpdateView(generics.UpdateAPIView):
-    queryset = Classification.objects.all()
-    serializer_class = ClassificationSerializer
+class ClassificationUpdateView(UpdateView):
+    model = Classification
+    form_class = ClassificationForm
+    template_name = 'classification_form.html'  # Укажите путь к вашему шаблону
+    success_url = reverse_lazy('classification_list')  # Замените на имя вашего URL
 
 
-class ClassificationDeleteView(generics.DestroyAPIView):
-    queryset = Classification.objects.all()
-    serializer_class = ClassificationSerializer
+class ClassificationDeleteView(DeleteView):
+    model = Classification
+    template_name = 'classification_confirm_delete.html'  # Укажите путь к вашему шаблону
+    success_url = reverse_lazy('classification_list')  # Замените на имя вашего URL
 
 
-# Doctor
-class DoctorListView(generics.ListAPIView):
-    queryset = Doctor.objects.all()
-    serializer_class = DoctorSerializer
+# DOCTOR
+class DoctorListView(ListView):
+    model = Doctor
+    template_name = 'doctor_list.html'  # Укажите путь к вашему шаблону
+    context_object_name = 'doctors'
 
 
-class DoctorCreateView(generics.CreateAPIView):
-    queryset = Doctor.objects.all()
-    serializer_class = DoctorSerializer
+class DoctorCreateView(CreateView):
+    model = Doctor
+    form_class = DoctorForm
+    template_name = 'doctor_form.html'  # Укажите путь к вашему шаблону
+    success_url = reverse_lazy('doctor_list')  # Замените на имя вашего URL
 
 
-class DoctorDetailView(generics.RetrieveAPIView):
-    queryset = Doctor.objects.all()
-    serializer_class = DoctorSerializer
+class DoctorDetailView(DetailView):
+    model = Doctor
+    template_name = 'doctor_detail.html'  # Укажите путь к вашему шаблону
+    context_object_name = 'doctor'
 
 
-class DoctorUpdateView(generics.UpdateAPIView):
-    queryset = Doctor.objects.all()
-    serializer_class = DoctorSerializer
+class DoctorUpdateView(UpdateView):
+    model = Doctor
+    form_class = DoctorForm
+    template_name = 'doctor_form.html'  # Укажите путь к вашему шаблону
+    success_url = reverse_lazy('doctor_list')  # Замените на имя вашего URL
 
 
-class DoctorDeleteView(generics.DestroyAPIView):
-    queryset = Doctor.objects.all()
-    serializer_class = DoctorSerializer
+class DoctorDeleteView(DeleteView):
+    model = Doctor
+    template_name = 'doctor_confirm_delete.html'  # Укажите путь к вашему шаблону
+    success_url = reverse_lazy('doctor_list')  # Замените на имя вашего URL

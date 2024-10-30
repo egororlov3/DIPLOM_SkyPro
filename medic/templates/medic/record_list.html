@@ -1,0 +1,25 @@
+{% extends 'medic/includes/base.html' %}
+
+{% block content %}
+  <h1>Записи</h1>
+
+  <h2>Добавить новую запись</h2>
+  <form method="POST" action="{% url 'record-create' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Создать</button>
+  </form>
+
+  <h2>Список записей</h2>
+  <ul>
+    {% for record in object_list %}
+      <li>
+        {{ record.title }} - <a href="{% url 'record-detail' record.id %}">Детали</a>
+        | <a href="{% url 'record-update' record.id %}">Редактировать</a>
+        | <a href="{% url 'record-delete' record.id %}">Удалить</a>
+      </li>
+    {% empty %}
+      <li>Нет записей.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

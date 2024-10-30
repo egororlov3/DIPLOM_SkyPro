@@ -1,0 +1,25 @@
+{% extends 'medic/includes/base.html' %}
+
+{% block content %}
+  <h1>Диагностические тесты</h1>
+
+  <h2>Добавить новый тест</h2>
+  <form method="POST" action="{% url 'medic:diagnostic_create' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Создать</button>
+  </form>
+
+  <h2>Список тестов</h2>
+  <ul>
+    {% for diagnostic in object_list %}
+      <li>
+        {{ diagnostic.name }} - <a href="{% url 'medic:diagnostic_detail' diagnostic.id %}">Детали</a>
+        | <a href="{% url 'medic:diagnostic_update' diagnostic.id %}">Редактировать</a>
+        | <a href="{% url 'medic:diagnostic_delete' diagnostic.id %}">Удалить</a>
+      </li>
+    {% empty %}
+      <li>Нет тестов.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
