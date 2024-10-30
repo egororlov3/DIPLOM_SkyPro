@@ -17,8 +17,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('users/', include('users.urls', namespace='users'))
+    path('', include('medic.urls', namespace='medic')),
+    path('users/', include('users.urls', namespace='users')),
+    path('doctors/', include('doctors.urls', namespace='doctors')),
 ]
