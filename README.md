@@ -27,8 +27,8 @@
 ### 1. Клонирование репозитория
 Клонируйте репозиторий на свой локальный компьютер:
 ```bash
-git clone https://github.com/username/medic-project.git
-cd medic-project
+git clone https://github.com/egororlov3/DIPLOM_SkyPro.git
+cd DIPLOM_SkyPro
 ```
 
 ### 2. Создайте виртуальное окружение и активируйте
