@@ -96,7 +96,6 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
     def form_valid(self, form):
-        print("Phone from form:", form.cleaned_data.get('phone'))  # Вывод телефона для отладки
         # Обработка загрузки аватара
         if 'avatar' in self.request.FILES:
             form.instance.avatar = self.request.FILES['avatar']

@@ -87,7 +87,7 @@
             <a href="{% url 'users:review_create' %}" class="btn-add-review">Добавить отзыв</a>
         </div>
     {% else %}
-        <p class="auth-message">Пожалуйста, <a href="{% url 'login' %}">войдите в систему</a>, чтобы оставить отзыв.</p>
+        <p class="auth-message">Пожалуйста, <a href="{% url 'users:login' %}">войдите в систему</a>, чтобы оставить отзыв.</p>
     {% endif %}
 </div>
 {% endblock %}
