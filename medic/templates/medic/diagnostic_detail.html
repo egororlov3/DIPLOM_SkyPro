@@ -1,22 +1,105 @@
 {% extends 'medic/includes/base.html' %}
+{% load static %}
 
 {% block content %}
-  <h1>Детали теста: {{ object.name }}</h1>
-  <p>Описание: {{ object.description }}</p>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #eaf9fb;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-  <h2>Редактировать тест</h2>
-  <form method="POST" action="{% url 'diagnostic-update' object.id %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Сохранить изменения</button>
-  </form>
+        .title {
+            color: #00b7c2;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-  <h2>Удалить тест</h2>
-  <form method="POST" action="{% url 'diagnostic-delete' object.id %}">
-    {% csrf_token %}
-    <p>Вы уверены, что хотите удалить этот тест?</p>
-    <button type="submit">Удалить</button>
-  </form>
+        .description {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+            color: #555;
+        }
 
-  <a href="{% url 'diagnostic-list' %}">Назад к списку тестов</a>
+        .pricing {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin: 20px 0;
+            text-align: center;
+            color: #00b7c2;
+        }
+
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .diagnostic-image {
+            max-width: 60%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Кнопка записи на прием */
+        .appointment-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .btn-primary {
+            background-color: #00b7c2;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #008f9e;
+        }
+
+        /* Ссылка "Назад" */
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #00b7c2;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<div class="container">
+    <h1 class="title">Детали диагностики: {{ diagnostic.title }}</h1>
+    <p class="description">Описание: {{ diagnostic.description }}</p>
+
+    <div class="pricing">
+        <h2>Цена: {{ diagnostic.price }} ₽</h2>
+    </div>
+
+    {% if diagnostic.image %}
+        <div class="image-container">
+            <img src="{{ diagnostic.image.url }}" alt="Изображение диагностики" class="diagnostic-image">
+        </div>
+    {% endif %}
+
+    <div class="appointment-section">
+        <form method="POST" action="{% url 'medic:record_create' %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary">Записаться на прием</button>
+        </form>
+    </div>
+
+    <a class="back-link" href="{% url 'medic:diagnostic_list' %}">Назад к списку услуг</a>
+</div>
 {% endblock %}

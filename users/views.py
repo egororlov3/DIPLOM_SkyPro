@@ -3,16 +3,17 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes, force_str
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, UpdateView, DetailView, ListView
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.contrib import messages
-from .forms import RegistrationForm, UserProfileForm
-from .models import User
+from .forms import RegistrationForm, UserProfileForm, ReviewForm
+from .models import User, Reviews
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .tokens import account_activation_token
 
 
+# USER
 class RegisterView(CreateView):
     model = User
     form_class = RegistrationForm
@@ -47,15 +48,16 @@ class RegisterView(CreateView):
                              'На ваш email отправлено письмо для активации аккаунта. Пожалуйста, проверьте почту.')
 
         except Exception as e:
+            messages.error(self.request, 'Ошибка при отправке письма: {}'.format(str(e)))
             return self.form_invalid(form)
 
         return super().form_valid(form)  # Завершение обработки и перенаправление на success_url
 
 
-class ProfileView(LoginRequiredMixin, UpdateView):
+class ProfileView(LoginRequiredMixin, DetailView):
     model = User
     form_class = UserProfileForm
-    template_name = 'users/user_form.html'
+    template_name = 'users/profile.html'
     success_url = reverse_lazy('users:profile')
 
     def get_object(self, queryset=None):
@@ -76,3 +78,45 @@ def activate(request, uidb64, token):
         return redirect('users:login')
     else:
         return render(request, 'users/activation_invalid.html')
+
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = UserProfileForm
+    template_name = 'users/profile_form.html'
+    success_url = reverse_lazy('users:profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['user'] = self.request.user
+        context['form'] = self.get_form()
+        return context
+
+    def form_valid(self, form):
+        print("Phone from form:", form.cleaned_data.get('phone'))  # Вывод телефона для отладки
+        # Обработка загрузки аватара
+        if 'avatar' in self.request.FILES:
+            form.instance.avatar = self.request.FILES['avatar']
+        return super().form_valid(form)
+
+
+# REVIEW
+class ReviewListView(ListView):
+    model = Reviews
+    template_name = 'users/review_list.html'
+    context_object_name = 'reviews'
+
+
+class ReviewCreateView(LoginRequiredMixin, CreateView):
+    model = Reviews
+    form_class = ReviewForm
+    template_name = 'users/review_form.html'
+    success_url = reverse_lazy('users:review_list')
+
+    def form_valid(self, form):
+        # Устанавливаем текущего пользователя как автора
+        form.instance.author = self.request.user
+        return super().form_valid(form)

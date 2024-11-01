@@ -7,7 +7,7 @@ class Classification(models.Model):
     description = models.TextField(verbose_name='описание')
 
     def __str__(self):
-        return f"{self.title}: {self.description}"
+        return f"{self.title}"
 
     class Meta:
         verbose_name = 'классификиция'
@@ -22,7 +22,7 @@ class Doctor(models.Model):
     image = models.ImageField(upload_to='#', **NULLABLE, verbose_name='аватар')
 
     def __str__(self):
-        return f"{self.full_name} ({self.classification}), работает {self.years} лет и {self.months} месяцев"
+        return f"{self.full_name} ({self.classification})"
 
     class Meta:
         verbose_name = 'врач'

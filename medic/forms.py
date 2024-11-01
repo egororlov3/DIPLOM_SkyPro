@@ -17,7 +17,7 @@ class DiagnosticForm(forms.ModelForm):
 class RecordForm(forms.ModelForm):
     class Meta:
         model = Record
-        fields = ['patient', 'diagnostic', 'date', 'doctors', 'wishes']
+        fields = ['patient', 'diagnostic', 'date', 'time', 'doctors', 'reason', 'wishes']
         labels = {
             'patient': 'Пациент',
             'diagnostic': 'Диагностика',

@@ -1,0 +1,110 @@
+{% extends 'medic/includes/base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <style>
+        /* Стили остались прежними */
+        .form-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #eaf9fb;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .title {
+            color: #00b7c2;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            box-sizing: border-box;
+        }
+
+        .btn-submit {
+            background-color: #00b7c2;
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background-color: #008f9e;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #00b7c2;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<div class="form-container">
+    <h1 class="title">Редактирование профиля</h1>
+
+    <form method="POST" action="{% url 'users:profile_edit' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label class="form-label" for="first_name">Имя:</label>
+            <input type="text" id="first_name" name="first_name" class="form-control" value="{{ user.first_name }}">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="last_name">Фамилия:</label>
+            <input type="text" id="last_name" name="last_name" class="form-control" value="{{ user.last_name }}">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="email">Email:</label>
+            <input type="email" id="email" name="email" class="form-control" value="{{ user.email }}">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="phone">Телефон:</label>
+            <input type="tel" id="phone" name="phone" class="form-control" value="{{ user.phone }}">
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="avatar">Аватар:</label>
+            <input type="file" id="avatar" name="avatar" class="form-control">
+            {% if user.avatar %}
+            <img src="{{ user.avatar.url }}" alt="Avatar" style="max-width: 100px; margin-top: 10px;">
+            {% endif %}
+        </div>
+
+
+        <button type="submit" class="btn-submit">Сохранить изменения</button>
+    </form>
+
+    <a class="back-link" href="{% url 'users:profile' %}">Вернуться в профиль</a>
+</div>
+{% endblock %}

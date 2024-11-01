@@ -1,0 +1,64 @@
+{% extends 'medic/includes/base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .classification-header {
+        background-color: #e0f7fa;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .doctor-card {
+        text-align: center;
+        padding: 20px;
+        border-radius: 10px;
+        background-color: #e0f7fa;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 20px;
+    }
+    .doctor-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+    .btn-primary {
+        background-color: #00aabb;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        color: white;
+        font-weight: bold;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+    .btn-primary:hover {
+        background-color: #007788;
+    }
+    .container {
+        margin-top: 80px;
+    }
+</style>
+
+<div class="container">
+    <div class="classification-header">
+        <h1>{{ classification.title }}</h1>
+        <p>{{ classification.description }}</p>
+    </div>
+
+    <h2>Врачи с этой классификацией:</h2>
+    <div class="row">
+        {% for doctor in doctors %}
+        <div class="col-lg-4">
+            <div class="doctor-card">
+                <img src="{{ doctor.image.url }}" class="card-img-top" alt="{{ doctor.full_name }}" style="border-radius: 50%; width: 140px; height: 140px; object-fit: cover; margin: 0 auto 15px; display: block;">
+                <h3 class="fw-normal">{{ doctor.full_name }}</h3>
+                <p>{{ doctor.classification }}</p>
+                <small class="text-muted">ОПЫТ {{ doctor.years }} лет и {{ doctor.months }} месяцев</small>
+                <p><a class="btn btn-primary" href="{% url 'doctors:doctor_detail' doctor.id %}">Подробнее</a></p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

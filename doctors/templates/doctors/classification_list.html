@@ -1,0 +1,74 @@
+{% extends 'medic/includes/base.html' %}
+{% load static %}
+
+{% block content %}
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+
+    <style>
+        h4 {
+            font-family: "Rubik Mono One", monospace;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 4rem;
+            color: #00b7c2;
+            text-align: center;
+        }
+        .album {
+            background-color: #f9f9f9;
+        }
+        .card {
+            border: none;
+            border-radius: 10px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+        .card-body {
+            text-align: center;
+        }
+        .btn-outline-secondary {
+            color: #00b7c2;
+            border-color: #00b7c2;
+            transition: all 0.3s;
+        }
+        .btn-outline-secondary:hover {
+            background-color: #00b7c2;
+            color: #fff;
+        }
+    </style>
+</head>
+
+<main>
+    <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <h4 class="mb-3">Классификации</h4>
+                <p class="lead text-muted">Подробная информация о различных классификациях медицинских услуг.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="album py-5">
+        <div class="container">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                {% for classification in classifications %}
+                <div class="col">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ classification.title }}</h5>
+                            <p class="card-text text-muted">{{ classification.description|slice:":100" }}{% if classification.description|length > 100 %}...{% endif %}</p>
+                            <a class="btn btn-sm btn-outline-secondary" href="{% url 'doctors:classification_detail' classification.id %}">Подробнее</a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

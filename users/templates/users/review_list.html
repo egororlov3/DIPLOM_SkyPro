@@ -1,0 +1,93 @@
+{% extends 'medic/includes/base.html' %}
+
+{% block content %}
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Allura&family=Rubik+Mono+One&display=swap" rel="stylesheet">
+
+<style>
+    .container {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+     h4 {
+            font-family: "Rubik Mono One", monospace;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 4rem;
+            color: #00b7c2;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+    h2 {
+        color: #00aabb;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .review-list {
+        margin-top: 20px;
+    }
+    .review-item {
+        border: 1px solid #00aabb;
+        border-radius: 5px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    .review-item h3 {
+        color: #007788;
+    }
+    .auth-message {
+        color: #00aabb;
+        text-align: center;
+        margin-top: 30px;
+    }
+    .btn-add-review {
+        display: inline-block;
+        background-color: #00aabb;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 20px;
+    }
+    .btn-add-review:hover {
+        background-color: #007788;
+    }
+</style>
+
+<section class="py-5 text-center container">
+        <div class="row py-lg-5">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h4 class="mb-0">Ваши Отзывы</h4>
+                <p class="lead text-muted"></p>
+            </div>
+        </div>
+    </section>
+
+<div class="container">
+    <h2>Отзывы наших клиентов</h2>
+
+    <div class="review-list">
+        {% for review in reviews %}
+            <div class="review-item">
+                <h3>{{ review.title }}</h3>
+                <p>{{ review.review }}</p>
+                <small>Автор: {{ review.author.last_name }} {{ review.author.first_name }}</small>
+            </div>
+        {% empty %}
+            <p class="auth-message">Отзывов пока нет. Будьте первым, кто оставит отзыв!</p>
+        {% endfor %}
+    </div>
+
+    {% if user.is_authenticated %}
+        <div class="auth-message">
+            <a href="{% url 'users:review_create' %}" class="btn-add-review">Добавить отзыв</a>
+        </div>
+    {% else %}
+        <p class="auth-message">Пожалуйста, <a href="{% url 'login' %}">войдите в систему</a>, чтобы оставить отзыв.</p>
+    {% endif %}
+</div>
+{% endblock %}

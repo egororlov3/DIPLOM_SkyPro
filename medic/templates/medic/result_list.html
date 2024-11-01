@@ -1,25 +1,84 @@
 {% extends 'medic/includes/base.html' %}
+{% load static %}
 
 {% block content %}
-  <h1>Результаты</h1>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <style>
+        .result-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #eaf9fb;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-  <h2>Добавить новый результат</h2>
-  <form method="POST" action="{% url 'result-create' %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Создать</button>
-  </form>
+        .title {
+            color: #00b7c2;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
 
-  <h2>Список результатов</h2>
-  <ul>
-    {% for result in object_list %}
-      <li>
-        {{ result.description }} - <a href="{% url 'result-detail' result.id %}">Детали</a>
-        | <a href="{% url 'result-update' result.id %}">Редактировать</a>
-        | <a href="{% url 'result-delete' result.id %}">Удалить</a>
-      </li>
-    {% empty %}
-      <li>Нет результатов.</li>
+        .result-item {
+            background-color: white;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .result-details {
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .btn-detail {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #00b7c2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-detail:hover {
+            background-color: #0094a2;
+        }
+
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #00b7c2;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<div class="result-container">
+    <h1 class="title">Результаты пациента</h1>
+
+    {% for result in results %}
+    <div class="result-item">
+        <div class="result-title"><strong>Название:</strong> {{ result.title }}</div>
+        <div class="result-details"><strong>Пациент:</strong> {{ user.first_name }} {{ user.last_name }}</div>
+        <div class="result-details"><strong>Дата:</strong> {{ result.date|date:"d.m.Y" }}</div>
+        <a href="{% url 'medic:result_detail' result.id %}" class="btn-detail">Подробнее</a>
+    </div>
     {% endfor %}
-  </ul>
+
+    <a class="back-link" href="{% url 'medic:main' %}">На главную</a>
+</div>
 {% endblock %}

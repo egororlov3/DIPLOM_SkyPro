@@ -1,19 +1,113 @@
 {% extends 'medic/includes/base.html' %}
-
-{% block title %}
-    {% if diagnostic %}Редактирование: {{ diagnostic.title }}{% else %}Создание нового поста{% endif %}
-{% endblock %}
+{% load static %}
 
 {% block content %}
-    <h1 class="text-center mb-4">{% if post %}Редактирование: {{ diagnostic.title }}{% else %}Создание нового поста{% endif %}</h1>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <style>
+        .form-container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #eaf9fb;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-    <form method="POST" enctype="multipart/form-data">
+        .form-title {
+            color: #00b7c2;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        .submit-button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #00b7c2;
+            color: #fff;
+            border-radius: 5px;
+            font-weight: bold;
+            text-align: center;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .submit-button:hover {
+            background-color: #008a96;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+
+<div class="form-container">
+    <h1 class="form-title">Создать запись на диагностику</h1>
+
+    <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
 
-        <div class="text-center">
-            <button type="submit" class="btn btn-primary">{% if post %}Сохранить изменения{% else %}Создать пост{% endif %}</button>
-            <a class="btn btn-outline-secondary" href="{% url 'blog:blog_list' %}">Вернуться к списку постов</a>
+        <input type="hidden" name="patient" value="{{ user.id }}">
+
+        <div class="form-group">
+            <label for="id_diagnostic" class="form-label">Диагностика:</label>
+            <select id="id_diagnostic" name="diagnostic" class="form-control" required>
+                {% for diagnostic in diagnostics %}
+                    <option value="{{ diagnostic.id }}">{{ diagnostic.title }}</option>
+                {% endfor %}
+            </select>
         </div>
+
+        <div class="form-group">
+            <label for="id_date" class="form-label">Дата записи:</label>
+            <input type="date" id="id_date" name="date" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="id_time" class="form-label">Время записи:</label>
+            <input type="time" id="id_time" name="time" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="id_doctors" class="form-label">Доктор:</label>
+            <select id="id_doctors" name="doctors" class="form-control" required>
+                {% for doctor in doctors %}
+                    <option value="{{ doctor.id }}">{{ doctor.full_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="id_reason" class="form-label">Причина записи:</label>
+            <textarea id="id_reason" name="reason" class="form-control" rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="id_wishes" class="form-label">Пожелания:</label>
+            <textarea id="id_wishes" name="wishes" class="form-control" rows="4"></textarea>
+        </div>
+
+        <button type="submit" class="submit-button">Создать запись</button>
     </form>
+</div>
 {% endblock %}
+

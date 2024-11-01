@@ -1,22 +1,89 @@
 {% extends 'medic/includes/base.html' %}
+{% load static %}
 
 {% block content %}
-  <h1>Детали теста: {{ object.name }}</h1>
-  <p>Описание: {{ object.description }}</p>
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <style>
+        .detail-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #eaf9fb;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
 
-  <h2>Редактировать тест</h2>
-  <form method="POST" action="{% url 'diagnostic-update' object.id %}">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Сохранить изменения</button>
-  </form>
+        .detail-title {
+            color: #00b7c2;
+            font-size: 2em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
 
-  <h2>Удалить тест</h2>
-  <form method="POST" action="{% url 'diagnostic-delete' object.id %}">
-    {% csrf_token %}
-    <p>Вы уверены, что хотите удалить этот тест?</p>
-    <button type="submit">Удалить</button>
-  </form>
+        .detail-section {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: white;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
 
-  <a href="{% url 'diagnostic-list' %}">Назад к списку тестов</a>
+        .detail-label {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .detail-text {
+            font-size: 1.1em;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #00b7c2;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .back-link:hover {
+            color: #0094a2;
+        }
+    </style>
+</head>
+
+<div class="detail-container">
+    <h1 class="detail-title">{{ result.title }}</h1>
+
+    <div class="detail-section">
+        <div class="detail-label">Пациент:</div>
+        <div class="detail-text">{{ result.patient.first_name }} {{ result.patient.last_name }}</div>
+    </div>
+
+    <div class="detail-section">
+        <div class="detail-label">Дата:</div>
+        <div class="detail-text">{{ result.date|date:"d.m.Y" }}</div>
+    </div>
+
+    {% if result.description %}
+    <div class="detail-section">
+        <div class="detail-label">Описание:</div>
+        <div class="detail-text">{{ result.description }}</div>
+    </div>
+    {% endif %}
+
+    <div class="detail-section">
+        <div class="detail-label">Результат:</div>
+        <div class="detail-text">{{ result.result }}</div>
+    </div>
+
+    <div class="detail-section">
+        <div class="detail-label">Лечение:</div>
+        <div class="detail-text">{{ result.medication }}</div>
+    </div>
+
+    <a href="{% url 'medic:result_list' %}" class="back-link">Назад к результатам</a>
+</div>
 {% endblock %}

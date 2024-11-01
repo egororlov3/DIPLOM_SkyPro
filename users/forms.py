@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import User
+from .models import User, Reviews
 
 
 class RegistrationForm(UserCreationForm):
@@ -18,5 +18,10 @@ class UserProfileForm(UserChangeForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         self.fields['password'].widget = forms.HiddenInput()
+
+
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Reviews
+        fields = ('title', 'review')
